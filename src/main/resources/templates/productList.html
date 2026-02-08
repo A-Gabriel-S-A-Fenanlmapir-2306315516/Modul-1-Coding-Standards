@@ -20,8 +20,13 @@
         </thead>
         <tbody>
         <tr th:each="product: ${products}">
+            <td th:text="${product.productId.substring(0, 8)}"></td>
             <td th:text="${product.productName}"></td>
             <td th:text="${product.productQuantity}"></td>
+            <td>
+                <a th:href="@{/product/edit/{id}(id=${product.productId})}" class="btn btn-sm btn-primary">Edit</a>
+                <a th:href="@{/product/delete/{id}(id=${product.productId})}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>
