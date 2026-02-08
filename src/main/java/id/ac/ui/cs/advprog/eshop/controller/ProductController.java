@@ -22,7 +22,6 @@ public class ProductController {
         Product product = new Product();
 
         model.addAttribute("product", product);
-        model.addAttribute("id", (product.getProductId()).toString());
         return "createProduct";
     }
 
@@ -41,10 +40,10 @@ public class ProductController {
     }
 
     @GetMapping("/edit/{productId}")
-    public String editProductForm(@PathVariable("productid") String productId, Model model){
+    public String editProductForm(@PathVariable("productId") String productId, Model model){
         Product product = service.findProdById(productId);
         model.addAttribute("product", product);
-        return "EditedProduct";
+        return "editProduct";
 
     }
 

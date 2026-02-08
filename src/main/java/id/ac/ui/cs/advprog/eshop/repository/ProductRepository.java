@@ -35,13 +35,12 @@ public class ProductRepository {
         return null;
     }
 
-    public Product editProduct(Product product){
-        int index = 0;
-        while (findAll().hasNext()){
-            index++;
-            Product productTemp = productData.get(index);
-            if(productTemp.getProductId().equals(product.getProductId())){
-                productData.set(index,productTemp);
+    public Product editProduct(Product product) {
+        for (int index = 0; index < productData.size(); index++) {
+            Product currentProduct = productData.get(index);
+            if (currentProduct.getProductId().equals(product.getProductId())) {
+
+                productData.set(index, product);
                 return product;
             }
         }
