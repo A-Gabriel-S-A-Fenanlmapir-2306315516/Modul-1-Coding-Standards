@@ -20,9 +20,7 @@ public class ProductController {
     @GetMapping("/create")
     public String createProductPage(Model model) {
         Product product = new Product();
-
         model.addAttribute("product", product);
-        model.addAttribute("id", (product.getProductId()).toString());
         return "createProduct";
     }
 
@@ -41,10 +39,10 @@ public class ProductController {
     }
 
     @GetMapping("/edit/{productId}")
-    public String editProductForm(@PathVariable("productid") String productId, Model model){
+    public String editProductForm(@PathVariable("productId") String productId, Model model){
         Product product = service.findProdById(productId);
         model.addAttribute("product", product);
-        return "EditedProduct";
+        return "editProduct";
 
     }
 
@@ -55,8 +53,9 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{productId}")
-    public String deleteProduct(@PathVariable("productId") String productId) {
+    public String deleteProduct(@PathVariable("productId") String productId, Model model) {
         service.deleteProduct(productId);
         return "redirect:../list";
     }
+
 }
