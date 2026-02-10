@@ -14,21 +14,17 @@
     <table border="1" class="table table-striped table-responsive-md">
         <thead>
         <tr>
-            <th scope="col">Id</th>
+            <th scope="col">id</th>
             <th scope="col">Product Name</th>
             <th scope="col">Quantity</th>
-        </tr>
+
+        </tr>   
         </thead>
         <tbody>
         <tr th:each="product: ${products}">
-            <td th:text="${product.productId.substring(0, 8)}"></td>
-            <td th:text="${product.proudctName}"></td>
-            <td th:text="${product.productQuantity}"></td>
-            <td>
-                <a th:href="@{/product/edit/{id}(id=${product.productId})}" class="btn btn-sm btn-primary">Edit</a>
-                <a th:href="@{/product/delete/{id}(id=${product.productId})}" class="btn btn-sm btn-primary">delete</a>
-            </td>
-
+            <td th:text="${product.getProductId"></td>
+            <td th:text="${product.getProductName}"></td>
+            <td th:text="${product.getProductQuantity}"></td>
         </tr>
 
         </tbody>
