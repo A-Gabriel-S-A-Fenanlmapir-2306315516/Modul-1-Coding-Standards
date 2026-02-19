@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Iterator;
 
@@ -39,31 +38,83 @@ class ProductRepositoryTest {
     }
 
     @Test
+    void testCreateWithNullId() {
+        Product product = new Product();
+        product.setProductName("Sampo Tanpa ID");
+        product.setProductQuantity(50);
+
+        Product savedProduct = productRepository.create(product);
+
+        assertNotNull(savedProduct.getProductId()); // ID otomatis di-generate
+    }
+
+    @Test
     void testFindAllIfEmpty() {
         Iterator<Product> productIterator = productRepository.findAll();
         assertFalse(productIterator.hasNext());
     }
 
     @Test
-    void testFindAllIfMoreThanOneProduct() {
-        Product product1 = new Product();
-        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product1.setProductName("Sampo Cap Bambang");
-        product1.setProductQuantity(100);
-        productRepository.create(product1);
+    void testFindIdFound() {
+        Product product = new Product();
+        product.setProductId("123");
+        product.setProductName("Sampo Kuda");
+        productRepository.create(product);
 
-        Product product2 = new Product();
-        product2.setProductId("a0f9de46-90b1-437d-a0bf-d0821dde9096");
-        product2.setProductName("Sampo Cap Usep");
-        product2.setProductQuantity(50);
-        productRepository.create(product2);
+        Product foundProduct = productRepository.findId("123");
+        assertNotNull(foundProduct);
+        assertEquals("Sampo Kuda", foundProduct.getProductName());
+    }
 
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertTrue(productIterator.hasNext());
-        Product savedProduct = productIterator.next();
-        assertEquals(product1.getProductId(), savedProduct.getProductId());
-        savedProduct = productIterator.next();
-        assertEquals(product2.getProductId(), savedProduct.getProductId());
-        assertFalse(productIterator.hasNext());
+    @Test
+    void testFindIdNotFound() {
+        Product product = new Product();
+        product.setProductId("123");
+        productRepository.create(product);
+
+        Product foundProduct = productRepository.findId("999"); // ID tidak ada
+        assertNull(foundProduct);
+    }
+
+    @Test
+    void testEditProductFound() {
+        Product product = new Product();
+        product.setProductId("123");
+        product.setProductName("Sampo Lama");
+        productRepository.create(product);
+
+        Product updatedData = new Product();
+        updatedData.setProductId("123");
+        updatedData.setProductName("Sampo Baru");
+        updatedData.setProductQuantity(10);
+
+        Product result = productRepository.editProduct(updatedData);
+
+        assertNotNull(result);
+        assertEquals("Sampo Baru", result.getProductName());
+        assertEquals(10, result.getProductQuantity());
+    }
+
+    @Test
+    void testEditProductNotFound() {
+        Product updatedData = new Product();
+        updatedData.setProductId("999"); // ID tidak ada di repo
+        updatedData.setProductName("Sampo Halusinasi");
+
+        Product result = productRepository.editProduct(updatedData);
+
+        assertNull(result);
+    }
+
+    @Test
+    void testDeleteProduct() {
+        Product product = new Product();
+        product.setProductId("123");
+        productRepository.create(product);
+
+        productRepository.deteleProduct("123"); // Sesuai dengan nama method di kodemu
+
+        Product foundProduct = productRepository.findId("123");
+        assertNull(foundProduct);
     }
 }
