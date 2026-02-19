@@ -45,7 +45,7 @@ class ProductRepositoryTest {
 
         Product savedProduct = productRepository.create(product);
 
-        assertNotNull(savedProduct.getProductId()); // ID otomatis di-generate
+        assertNotNull(savedProduct.getProductId());
     }
 
     @Test
@@ -72,7 +72,7 @@ class ProductRepositoryTest {
         product.setProductId("123");
         productRepository.create(product);
 
-        Product foundProduct = productRepository.findId("999"); // ID tidak ada
+        Product foundProduct = productRepository.findId("999");
         assertNull(foundProduct);
     }
 
@@ -98,7 +98,7 @@ class ProductRepositoryTest {
     @Test
     void testEditProductNotFound() {
         Product updatedData = new Product();
-        updatedData.setProductId("999"); // ID tidak ada di repo
+        updatedData.setProductId("999");
         updatedData.setProductName("Sampo Halusinasi");
 
         Product result = productRepository.editProduct(updatedData);
@@ -112,9 +112,26 @@ class ProductRepositoryTest {
         product.setProductId("123");
         productRepository.create(product);
 
-        productRepository.deteleProduct("123"); // Sesuai dengan nama method di kodemu
+        productRepository.deteleProduct("123");
 
         Product foundProduct = productRepository.findId("123");
         assertNull(foundProduct);
+    }@Test
+    void testEditProductIfRepoIsNotEmptyButIdNotFound() {
+
+        Product product = new Product();
+        product.setProductId("123");
+        product.setProductName("Sampo Asli");
+        productRepository.create(product);
+
+
+        Product updatedData = new Product();
+        updatedData.setProductId("999");
+        updatedData.setProductName("Sampo Palsu");
+
+        Product result = productRepository.editProduct(updatedData);
+
+
+        assertNull(result);
     }
 }
