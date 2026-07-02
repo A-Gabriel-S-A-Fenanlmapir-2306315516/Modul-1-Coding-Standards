@@ -1,7 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.model.Car;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,10 +10,11 @@ import java.util.UUID;
 
 
 @Repository
-public class ProductRepository {
-    private List<Product> productData = new ArrayList<>();
+public class ProductRepository implements ProductRepositoryInterface {
+    private final List<Product> productData = new ArrayList<>();
 
 
+    @Override
     public Product create (Product product){
         if (product.getProductId() == null){
             product.setProductId(UUID.randomUUID().toString());
@@ -24,9 +24,12 @@ public class ProductRepository {
         return product;
     }
 
+    @Override
     public Iterator<Product> findAll(){
         return  productData.iterator();
     }
+
+    @Override
     public Product findId(String productId){
         for(Product product : productData){
             if(product.getProductId().equals(productId)) {
@@ -36,6 +39,7 @@ public class ProductRepository {
         return null;
     }
 
+    @Override
     public Product editProduct(Product product) {
         for (int index = 0; index < productData.size(); index++) {
             Product currentProduct = productData.get(index);
@@ -48,7 +52,8 @@ public class ProductRepository {
         return null;
     }
 
-    public void deteleProduct(String productId){
+    @Override
+    public void deleteProduct(String productId){
         productData.removeIf(product -> product.getProductId().equals(productId));
     }
 

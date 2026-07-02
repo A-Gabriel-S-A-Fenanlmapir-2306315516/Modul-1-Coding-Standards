@@ -112,11 +112,13 @@ class ProductRepositoryTest {
         product.setProductId("123");
         productRepository.create(product);
 
-        productRepository.deteleProduct("123");
+        productRepository.deleteProduct("123");
 
         Product foundProduct = productRepository.findId("123");
         assertNull(foundProduct);
-    }@Test
+    }
+
+    @Test
     void testEditProductIfRepoIsNotEmptyButIdNotFound() {
 
         Product product = new Product();
